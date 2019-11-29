@@ -7,6 +7,9 @@ namespace WebTest
 {
     public class DigitalLinkedList : LinkedList<int>
     {
+        public DigitalLinkedList()
+        {
+        }
         public DigitalLinkedList(int input)
         {
             var array = input.ToString().Select(o => Convert.ToInt32(o) - 48);
@@ -20,9 +23,43 @@ namespace WebTest
                 this.AddLast(value);
         }
 
-        public static DigitalLinkedList operator +(DigitalLinkedList b, DigitalLinkedList c)
+        public static DigitalLinkedList operator +(DigitalLinkedList a, DigitalLinkedList b)
         {
-            return new DigitalLinkedList((b.ToInt32() + c.ToInt32()));
+            //Θ(n)
+            var c = new DigitalLinkedList();
+
+            if (a.Count < b.Count)
+            {
+                var x = a;
+                a = b;
+                b = x;
+            }
+
+            int addition = 0;
+            var nodeB = b.First;
+            for (var nodeA = a.First; nodeA != null; nodeA = nodeA.Next)
+            {
+                if (nodeB != null)
+                {
+                    var sum = nodeA.Value + nodeB.Value + addition;
+
+                    if (sum > 10)
+                    {
+                        addition = sum / 10;
+                        c.AddLast(sum % 10);
+                    }
+                    else
+                    {
+                        addition = 0;
+                        c.AddLast(sum);
+                    }
+                    nodeB = nodeB.Next;
+                }
+                else
+                    c.AddLast(nodeA.Value);
+            }
+            if(addition > 0) c.AddLast(addition);
+            return c;
         }
 
         public int ToInt32()

@@ -13,19 +13,36 @@ namespace WebTest.Controllers
         [HttpPost("task1")]
         public ActionResult<int> SumEverySecondNonOddDigit([FromBody] int[] digits)
         {
-            return digits.Where((x) => Math.Abs(x % 2) == 1).Where((x, i) => i % 2 == 1).Select(x => Math.Abs(x)).Sum();
+            //Θ(n)
+            int result = 0;
+            bool isSecond = false;
+            for (int i = 0; i < digits.Length; i++)
+                if (Math.Abs(digits[i] % 2) == 1)
+                {
+                    if (isSecond) result += Math.Abs(digits[i]);
+                    isSecond = !isSecond;
+                }
+            return result;
         }
 
         [HttpPost("task2")]
-        public ActionResult<int[]> SumDigitalLinkedLists([FromBody]Task2Dto request)
+        public ActionResult<int> SumDigitalLinkedLists([FromBody] int[] digits)
         {
-            return (new DigitalLinkedList(request.First) + new DigitalLinkedList(request.Second)).ToArray();
+            if (digits.Length != 2) return BadRequest();
+            //Θ(n)
+            return (new DigitalLinkedList(digits[0]) + new DigitalLinkedList(digits[1])).ToInt32();
         }
 
         [HttpPost("task3")]
         public ActionResult<bool> IsStringPalindrom([FromBody] string value)
         {
-            return value.ToUpper().SequenceEqual(value.ToUpper().Reverse());
+            //Θ(n/2)
+            for (int i = 0; i < value.Length / 2; i++)
+            {
+                if (char.ToUpperInvariant(value[i]) != char.ToUpperInvariant(value[value.Length -1 - i]))
+                    return false;
+            }
+            return true;
         }
     }
 }

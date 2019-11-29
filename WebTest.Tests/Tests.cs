@@ -23,15 +23,15 @@ namespace WebTest.Tests
             Assert.AreEqual(expResult, res);
         }
 
-        [TestCase(new int[] { 8, 6, 4, 2 }, new int[] { 4, 3, 2, 1 }, new int[] { 4, 3, 2, 1 })]
-        [TestCase(new int[] { 3, 1, 0, 7 }, new int[] { 2, 1}, new int[] { 1, 0, 0, 7 })]
-        [TestCase(new int[] { 8, 9, 9, 9, 1 }, new int[] { 9, 9, 9, 9 }, new int[] { 9, 9, 9, 9 })]
-        public void TestSecondTask(int[] expResult, int[] first, int[] second)
+        [TestCase(2468, 1234, 1234)]
+        [TestCase(7013, 12, 7001)]
+        [TestCase(19998, 9999, 9999)]
+        public void TestSecondTask(int expResult, int first, int second)
         {
             // Arrange
             var sut = new TestController();
             // Act
-            var res = sut.SumDigitalLinkedLists(new Task2Dto() { First = first, Second = second }).Value;
+            var res = sut.SumDigitalLinkedLists(new[] { first, second }).Value;
             // Assert
             Assert.AreEqual(expResult, res);
         }
